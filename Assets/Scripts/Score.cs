@@ -6,7 +6,6 @@ using UnityEngine;
 public static class Score {
 
     public static void Start() {
-        ResetHighscore();
         Bird.GetInstance().OnDeath += Bird_OnDeath;
     }
 

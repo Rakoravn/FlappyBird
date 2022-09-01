@@ -25,4 +25,9 @@ public class MainMenuWindow : MonoBehaviour {
         Application.Quit();
         SoundManager.PlaySound(SoundManager.Sound.ButtonClick);
     }
+
+    public void Reset() {
+        Score.ResetHighscore();
+        SoundManager.PlaySound(SoundManager.Sound.ButtonClick);
+    }
 }

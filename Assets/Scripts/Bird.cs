@@ -63,7 +63,7 @@ public class Bird : MonoBehaviour {
                         pressedUp = true;
                     }
                 }
-                if (rigidbody2D.position.y < -80) {
+                if (rigidbody2D.position.y < -80 || rigidbody2D.position.y > 80) {
                     rigidbody2D.bodyType = RigidbodyType2D.Static;
                     SoundManager.PlaySound(SoundManager.Sound.Die);
                     state = State.Dead;
