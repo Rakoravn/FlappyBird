@@ -34,13 +34,6 @@ public class Bird : MonoBehaviour {
         state = State.WaitingToStart;
     }
 
-    /*void OnGUI() {
-        Event e = Event.current;
-        if (e.isKey) {
-            Debug.Log("Detected key code: " + e.keyCode);
-        }
-    }*/
-
     private void Update() {
         switch (state) {
             default:
@@ -70,6 +63,12 @@ public class Bird : MonoBehaviour {
                         pressedUp = true;
                     }
                 }
+                if (rigidbody2D.position.y < -80) {
+                    rigidbody2D.bodyType = RigidbodyType2D.Static;
+                    SoundManager.PlaySound(SoundManager.Sound.Die);
+                    state = State.Dead;
+                    if (OnDeath != null) { OnDeath(this, EventArgs.Empty); }
+                }
                 break;
             case State.Dead:
                 break;
@@ -84,7 +83,6 @@ public class Bird : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision) {
         rigidbody2D.bodyType = RigidbodyType2D.Static;
         SoundManager.PlaySound(SoundManager.Sound.Die);
-
         state = State.Dead;
         if (OnDeath != null) { OnDeath(this, EventArgs.Empty); }
     }
