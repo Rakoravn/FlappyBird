@@ -41,7 +41,7 @@ public class Bird : MonoBehaviour {
                 if (Input.GetAxis("Vertical") == 0) {
                     pressedUp = false;
                 }
-                if (Input.GetKeyDown(KeyCode.Space) || Input.touchCount > 0 || Input.GetAxis("Vertical") > 0) {
+                if (Input.GetKeyUp(KeyCode.Space) || Input.touchCount > 0 || Input.GetAxis("Vertical") > 0) {
                     if (!pressedUp) {
                         state = State.Playing;
                         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;

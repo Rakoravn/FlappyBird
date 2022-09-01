@@ -115,6 +115,7 @@ Library: lib_burst_generated64
 --compilation-defines=ENABLE_TERRAIN
 --compilation-defines=ENABLE_TILEMAP
 --compilation-defines=ENABLE_TIMELINE
+--compilation-defines=ENABLE_INPUT_SYSTEM
 --compilation-defines=ENABLE_LEGACY_INPUT_MANAGER
 --compilation-defines=PACKAGE_PHYSICS
 --compilation-defines=PACKAGE_PHYSICS2D
@@ -123,11 +124,18 @@ Library: lib_burst_generated64
 --compilation-defines=PACKAGE_UITOOLKIT
 --compilation-defines=CSHARP_7_OR_LATER
 --compilation-defines=CSHARP_7_3_OR_NEWER
+--compilation-defines=PACKAGE_INPUT_SYSTEM_EXISTS
+--compilation-defines=PACKAGE_INPUT_SYSTEM_1_2_0_OR_NEWER_EXISTS
 --compilation-defines=MODULE_AI_EXISTS
 --compilation-defines=MODULE_ANIMATION_EXISTS
 --compilation-defines=MODULE_PHYSICS_EXISTS
 --compilation-defines=MODULE_PHYSICS_2D_EXISTS
 --compilation-defines=MODULE_PARTICLE_SYSTEM_EXISTS
+--compilation-defines=UNITY_INPUT_SYSTEM_ENABLE_VR
+--compilation-defines=UNITY_INPUT_SYSTEM_ENABLE_XR
+--compilation-defines=UNITY_INPUT_SYSTEM_ENABLE_PHYSICS
+--compilation-defines=UNITY_INPUT_SYSTEM_ENABLE_PHYSICS2D
+--compilation-defines=UNITY_INPUT_SYSTEM_ENABLE_UI
 --compilation-defines=ENABLE_ANIMATION_BURST
 --compilation-defines=TIMELINE_FRAMEACCURATE
 --compilation-defines=ENABLE_SPRITESHAPE_BURST
@@ -138,12 +146,14 @@ Library: lib_burst_generated64
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.VisualScripting.Flow.dll
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.Mathematics.dll
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.Services.Core.Telemetry.dll
+--root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.InputSystem.dll
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.VisualScripting.State.dll
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.VisualScripting.Core.dll
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.Services.Core.Environments.Internal.dll
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.Burst.dll
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.2D.Animation.Runtime.dll
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.TextMeshPro.dll
+--root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Assembly-CSharp.dll
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.Timeline.dll
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.Services.Core.dll
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.Services.Core.Environments.dll
@@ -161,7 +171,6 @@ Library: lib_burst_generated64
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.Services.Core.Networking.dll
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.InternalAPIEngineBridge.001.dll
 --root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Unity.Services.Core.Configuration.dll
---root-assembly=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/Assembly-CSharp.dll
 --assembly-folder=/Users/chuni/Unity Projects/FlappyBird/Temp/StagingArea/Data/Managed/
 --pdb-search-paths=Temp/ManagedSymbols/
 --method=Unity.Burst.BurstCompiler+BurstCompilerHelper, Unity.Burst, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::IsBurstEnabled()--8c2be93e18276203cbd918daa2748a10
