@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 public class Bird : MonoBehaviour {
     private const float JUMP_AMOUNT = 100f;
 
+    private bool pressedUp = false;
+
     private static Bird instance;
 
     public static Bird GetInstance() {
@@ -43,18 +45,30 @@ public class Bird : MonoBehaviour {
         switch (state) {
             default:
             case State.WaitingToStart:
+                if (Input.GetAxis("Vertical") == 0) {
+                    pressedUp = false;
+                }
                 if (Input.GetKeyDown(KeyCode.Space) || Input.touchCount > 0 || Input.GetAxis("Vertical") > 0) {
-                    state = State.Playing;
-                    rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-                    Jump();
-                    if(OnStartPlaying != null) {
-                        OnStartPlaying(this, EventArgs.Empty);
+                    if (!pressedUp) {
+                        state = State.Playing;
+                        rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+                        Jump();
+                        if(OnStartPlaying != null) {
+                            OnStartPlaying(this, EventArgs.Empty);
+                        } 
+                        pressedUp = true;
                     }
                 }
                 break;
             case State.Playing:
+                if (Input.GetAxis("Vertical") == 0) {
+                    pressedUp = false;
+                }
                 if (Input.GetKeyDown(KeyCode.Space) || Input.touchCount > 0 || Input.GetAxis("Vertical") > 0) {
-                    Jump();
+                    if (!pressedUp) {
+                        Jump();
+                        pressedUp = true;
+                    }
                 }
                 break;
             case State.Dead:
@@ -64,7 +78,7 @@ public class Bird : MonoBehaviour {
 
     private void Jump() {
         rigidbody2D.velocity = Vector2.up * JUMP_AMOUNT;
-        SoundManager.PlaySound(SoundManager.Sound.Jump); 
+        SoundManager.PlaySound(SoundManager.Sound.Jump);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
