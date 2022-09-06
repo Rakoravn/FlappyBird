@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Level : MonoBehaviour {
     private const float CAMERA_ORTHO_SIZE = 50f;
-    private const float PIPE_WIDTH = 10.4f;
+    private const float PIPE_WIDTH = 65f;
     private const float PIPE_HEAD_HEIGHT = 3.75f;
     private const float PIPE_MOVE_SPEED = 30f;
     private const float PIPE_DESTROY_X_POSITION = -120f;
@@ -71,9 +71,9 @@ public class Level : MonoBehaviour {
         if (pipeSpawnTimer < 0) {
             pipeSpawnTimer += pipeSpawnTimerMax;
             float heightEdgeLimit = 10f;
-            float minHeight = gapSize * .5f + heightEdgeLimit;
+            float minHeight = 60f;//gapSize * .5f + heightEdgeLimit;
             float totalHeight = CAMERA_ORTHO_SIZE * 2f;
-            float maxHeight = totalHeight - gapSize * .5f - heightEdgeLimit;
+            float maxHeight = 60f;//totalHeight - gapSize * .5f - heightEdgeLimit;
             float height = Random.Range(minHeight, maxHeight);
             CreateGapPipes(height, gapSize, PIPE_SPAWN_X_POSITION);
         }
@@ -102,65 +102,69 @@ public class Level : MonoBehaviour {
         switch (difficulty) {
             case Difficulty.Easy:
                 gapSize = 50f;
-                pipeSpawnTimerMax = 1.2f;
+                pipeSpawnTimerMax = 1.5f;
                 break;
             case Difficulty.Medium:
                 gapSize = 40f;
-                pipeSpawnTimerMax = 1.1f;
+                pipeSpawnTimerMax = 1.3f;
                 break;
             case Difficulty.Hard:
                 gapSize = 33f;
-                pipeSpawnTimerMax = 1.0f;
+                pipeSpawnTimerMax = 1.2f;
                 break;
             case Difficulty.Impossible:
                 gapSize = 24f;
-                pipeSpawnTimerMax = .8f;
+                pipeSpawnTimerMax = 1.0f;
                 break;
         }
     }
 
     private Difficulty GetDifficulty() {
-        if (pipesSpawned >= 30) { return Difficulty.Impossible; }
-        if (pipesSpawned >= 20) { return Difficulty.Hard; }
-        if (pipesSpawned >= 10) { return Difficulty.Medium; }
+        if (pipesSpawned >= 50) { return Difficulty.Impossible; }
+        if (pipesSpawned >= 35) { return Difficulty.Hard; }
+        if (pipesSpawned >= 20) { return Difficulty.Medium; }
         return Difficulty.Easy;
     }
 
     private void CreateGapPipes(float gapY, float gapSize, float xPosition) {
-        CreatePipe(gapY - gapSize * .5f, xPosition, true);
-        CreatePipe(CAMERA_ORTHO_SIZE * 2f - gapY - gapSize * .5f, xPosition, false);
+        float x = Random.Range(0, gapY/2);
+        float y = gapY / 2 - x;
+
+        CreatePipe(gapY, xPosition, true, x);
+        CreatePipe(120 - gapY, xPosition, false, y);
         pipesSpawned++;
         SetDifficulty(GetDifficulty());
     }
 
-    private void CreatePipe(float height, float xPosition, bool createOnBottom) {
+    private void CreatePipe(float height, float xPosition, bool createOnBottom, float yPosMod) {
         //CREATE PIPEHEAD
         Transform pipeHead = Instantiate(GameAssets.GetInstance().pfPipeHead);
         float pipeHeadYPosition;
         if (createOnBottom) {
-            pipeHeadYPosition = -CAMERA_ORTHO_SIZE + height - PIPE_HEAD_HEIGHT * .5f;
+        pipeHeadYPosition = -CAMERA_ORTHO_SIZE + height - PIPE_HEAD_HEIGHT * .5f;
         } else {
-            pipeHeadYPosition = +CAMERA_ORTHO_SIZE - height + PIPE_HEAD_HEIGHT * .5f;
+        pipeHeadYPosition = +CAMERA_ORTHO_SIZE - height + PIPE_HEAD_HEIGHT * .5f;
         }
         pipeHead.position = new Vector3(xPosition, pipeHeadYPosition);
 
         //CREATE PIPEBODY
         Transform pipeBody = Instantiate(GameAssets.GetInstance().pfPipeBody);
+
         float pipeBodyYPosition;
         if (createOnBottom) {
-            pipeBodyYPosition = -CAMERA_ORTHO_SIZE;
+            pipeBodyYPosition = -CAMERA_ORTHO_SIZE-10 + yPosMod;
         } else {
-            pipeBodyYPosition = +CAMERA_ORTHO_SIZE;
+            pipeBodyYPosition = +CAMERA_ORTHO_SIZE+10 - yPosMod;
             pipeBody.localScale = new Vector3(1, -1, 1);
         }
         pipeBody.position = new Vector3(xPosition, pipeBodyYPosition);
 
         SpriteRenderer pipeBodySpriteRenderer = pipeBody.GetComponent<SpriteRenderer>();
-        pipeBodySpriteRenderer.size = new Vector2(PIPE_WIDTH, height);
+        pipeBodySpriteRenderer.size = new Vector2(height, height);
 
         BoxCollider2D pipeBodyBoxCollider = pipeBody.GetComponent<BoxCollider2D>();
-        pipeBodyBoxCollider.size = new Vector2(PIPE_WIDTH, height);
-        pipeBodyBoxCollider.offset = new Vector2(0, height * .5f);
+        pipeBodyBoxCollider.size = new Vector2(height / 10, height);
+        pipeBodyBoxCollider.offset = new Vector2(0.8f, -2f);
 
         Pipe pipe = new Pipe(pipeHead, pipeBody, createOnBottom);
         pipeList.Add(pipe);
