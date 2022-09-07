@@ -25,7 +25,6 @@ public class GameOverWindow : MonoBehaviour {
         Score.TrySetNewHighscore(Level.GetInstance().GetPipesPassedCount());
         scoreText.text = Level.GetInstance().GetPipesPassedCount().ToString();
         highscoreText.text = Score.GetHighscore().ToString();
-        btn.Select();
         Show();
     }
 

@@ -13,7 +13,6 @@ public class MainMenuWindow : MonoBehaviour {
 
     private void Start() {
         btn = GameObject.Find("playBtn").GetComponent<Button>();
-        btn.Select();
     }
 
     public void Play() {
