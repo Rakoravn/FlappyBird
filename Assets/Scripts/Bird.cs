@@ -20,6 +20,10 @@ public class Bird : MonoBehaviour {
 
     private Rigidbody2D rigidbody2D;
     private State state;
+    Vector2 moveDir = Vector2.zero;
+    public float mSpeed = 5;
+
+    public bool playWithSpace = false;
 
     private enum State {
         WaitingToStart,
@@ -38,40 +42,64 @@ public class Bird : MonoBehaviour {
         switch (state) {
             default:
             case State.WaitingToStart:
-                if (Input.GetAxis("Vertical") == 0) {
-                    pressedUp = false;
-                }
-                if (Input.GetKeyUp(KeyCode.Space) || Input.touchCount > 0 || Input.GetAxis("Vertical") > 0) {
-                    if (!pressedUp) {
+                if(playWithSpace) {
+                    if (Input.GetAxis("Vertical") == 0) {
+                        pressedUp = false;
+                    }
+                    if (Input.GetKeyUp(KeyCode.Space) || Input.touchCount > 0 || Input.GetAxis("Vertical") > 0) {
+                        if (!pressedUp) {
+                            state = State.Playing;
+                            rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+                            Jump();
+                            if(OnStartPlaying != null) {
+                                OnStartPlaying(this, EventArgs.Empty);
+                            } 
+                            pressedUp = true;
+                        }
+                    }
+                } else {
+                    if(Input.GetAxis("Vertical") != 0) {
                         state = State.Playing;
                         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-                        Jump();
+                        rigidbody2D.gravityScale = 0;
                         if(OnStartPlaying != null) {
                             OnStartPlaying(this, EventArgs.Empty);
-                        } 
-                        pressedUp = true;
+                        }
                     }
                 }
                 break;
             case State.Playing:
-                if (Input.GetAxis("Vertical") == 0) {
-                    pressedUp = false;
-                }
-                if (Input.GetKeyDown(KeyCode.Space) || Input.touchCount > 0 || Input.GetAxis("Vertical") > 0) {
-                    if (!pressedUp) {
-                        Jump();
-                        pressedUp = true;
+                if(playWithSpace) {
+                    if (Input.GetAxis("Vertical") == 0) {
+                        pressedUp = false;
                     }
-                }
-                if (rigidbody2D.position.y < -80 || rigidbody2D.position.y > 80) {
-                    rigidbody2D.bodyType = RigidbodyType2D.Static;
-                    SoundManager.PlaySound(SoundManager.Sound.Die);
-                    state = State.Dead;
-                    if (OnDeath != null) { OnDeath(this, EventArgs.Empty); }
+                    if (Input.GetKeyDown(KeyCode.Space) || Input.touchCount > 0 || Input.GetAxis("Vertical") > 0) {
+                        if (!pressedUp) {
+                            Jump();
+                            pressedUp = true;
+                        }
+                    }
+                    if (rigidbody2D.position.y < -80 || rigidbody2D.position.y > 80) {
+                        rigidbody2D.bodyType = RigidbodyType2D.Static;
+                        SoundManager.PlaySound(SoundManager.Sound.Die);
+                        state = State.Dead;
+                        if (OnDeath != null) { OnDeath(this, EventArgs.Empty); }
+                    }
+                } else {
+
+                    float moveX = Input.GetAxis("Horizontal");
+                    float moveY = Input.GetAxis("Vertical");
+                    moveDir = new Vector2(moveX, moveY);
                 }
                 break;
             case State.Dead:
                 break;
+        }
+    }
+
+    private void FixedUpdate() {
+        if(!playWithSpace) {
+            rigidbody2D.velocity = new Vector2(0, moveDir.x * mSpeed);
         }
     }
 
