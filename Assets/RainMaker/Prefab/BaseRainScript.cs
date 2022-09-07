@@ -169,7 +169,7 @@ namespace DigitalRuby.RainMaker
                             audioSourceRainCurrent.Stop();
                         }
                         audioSourceRainCurrent = newSource;
-                        audioSourceRainCurrent.Play(1.0f);
+                        audioSourceRainCurrent.Play(0.4f);
                     }
                     if (RainFallParticleSystem != null)
                     {
@@ -333,7 +333,7 @@ namespace DigitalRuby.RainMaker
             AudioSource.playOnAwake = false;
             AudioSource.volume = 0.0f;
             AudioSource.Stop();
-            TargetVolume = 1.0f;
+            TargetVolume = 0.4f;
         }
 
         public void Play(float targetVolume)
