@@ -15,7 +15,8 @@ public class MainMenuWindow : MonoBehaviour {
         btn = GameObject.Find("playBtn").GetComponent<Button>();
     }
 
-    public void Play() {
+    public void Play(bool playByJumping) {
+        PlayerPrefs.SetInt("GAMEMODE", playByJumping ? 1 : 0);
         Loader.Load(Loader.Scene.GameScene);
         SoundManager.PlaySound(SoundManager.Sound.ButtonClick);
     }

@@ -21,9 +21,9 @@ public class Bird : MonoBehaviour {
     private Rigidbody2D rigidbody2D;
     private State state;
     Vector2 moveDir = Vector2.zero;
-    public float mSpeed = 5;
+    public float mSpeed = 10;
 
-    public bool playWithSpace = false;
+    private bool playWithSpace;
 
     private enum State {
         WaitingToStart,
@@ -31,11 +31,26 @@ public class Bird : MonoBehaviour {
         Dead,
     }
 
-    private void Awake() {
+    private void Awake()
+    {
         instance = this;
+    }
+
+    private void Start() {
         rigidbody2D = GetComponent<Rigidbody2D>();
         rigidbody2D.bodyType = RigidbodyType2D.Static;
         state = State.WaitingToStart;
+        playWithSpace = PlayerPrefs.GetInt("GAMEMODE") == 1 ? true : false;
+        if (!playWithSpace)
+        {
+            state = State.Playing;
+            rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+            rigidbody2D.gravityScale = 0;
+            if (OnStartPlaying != null)
+            {
+                OnStartPlaying(this, EventArgs.Empty);
+            }
+        }
     }
 
     private void Update() {
@@ -55,15 +70,6 @@ public class Bird : MonoBehaviour {
                                 OnStartPlaying(this, EventArgs.Empty);
                             } 
                             pressedUp = true;
-                        }
-                    }
-                } else {
-                    if(Input.GetAxis("Vertical") != 0) {
-                        state = State.Playing;
-                        rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-                        rigidbody2D.gravityScale = 0;
-                        if(OnStartPlaying != null) {
-                            OnStartPlaying(this, EventArgs.Empty);
                         }
                     }
                 }
@@ -86,7 +92,6 @@ public class Bird : MonoBehaviour {
                         if (OnDeath != null) { OnDeath(this, EventArgs.Empty); }
                     }
                 } else {
-
                     float moveX = Input.GetAxis("Horizontal");
                     float moveY = Input.GetAxis("Vertical");
                     moveDir = new Vector2(moveX, moveY);
@@ -98,8 +103,8 @@ public class Bird : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        if(!playWithSpace) {
-            rigidbody2D.velocity = new Vector2(0, moveDir.x * mSpeed);
+        if(!playWithSpace && state == State.Playing) {
+            rigidbody2D.velocity = new Vector2(0, -moveDir.x * mSpeed);
         }
     }
 
